@@ -80,6 +80,10 @@ export const setupChannelListHandlers = (element) => {
   }
 
   if (channelList) {
+    // 이벤트 위임방식
+    // 성능: 100개의 버튼 각각에 리스너를 달 필요 없이 부모 하나로 해결
+    // JS로 새로 추가된 행도 자동으로 이벤트 처리됨
+    // 한 곳에서 모든 클릭 이벤트를 관리할 수 있음
     channelList.addEventListener("click", (e) => {
       const channelRow = e.target.closest("tr[data-channel-id]");
       if (!channelRow) return;
