@@ -13,6 +13,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -25,9 +29,10 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
-  min-width: 320px;
+  align-items: center;
   min-height: 100vh;
+  flex-direction: column;
+  gap: 20px;
 }
 
 h1 {
@@ -40,6 +45,12 @@ h1 {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+#divider {
+  height: 1px;
+  width: 100%;
+  background-color: #888;
 }
 
 .logo {
@@ -63,6 +74,11 @@ h1 {
   color: #888;
 }
 
+.container {
+  width: 100%;
+  max-width: 1280px;
+  padding: 10px;
+}
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -82,6 +98,109 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* TODO List Styles */
+.todo-input-section {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+#todo-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+  font-family: inherit;
+  background-color: transparent;
+  color: inherit;
+}
+
+#todo-input:focus {
+  outline: 2px solid #646cff;
+  border-color: transparent;
+}
+
+#add-todo-btn {
+  padding: 8px 20px;
+  background-color: #646cff;
+  color: white;
+  border: none;
+  white-space: nowrap;
+}
+
+#add-todo-btn:hover {
+  background-color: #535bf2;
+}
+
+#todo-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+#todo-table thead tr {
+  border-bottom: 2px solid #444;
+}
+
+#todo-table th {
+  padding: 12px 10px;
+  font-weight: 600;
+}
+
+#todo-table tbody tr {
+  border-bottom: 1px solid #333;
+  transition: background-color 0.2s;
+}
+
+#todo-table tbody tr:hover {
+  background-color: rgba(100, 108, 255, 0.1);
+}
+
+#todo-table td {
+  padding: 12px 10px;
+}
+
+.todo-checkbox {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  accent-color: #646cff;
+}
+
+.edit-todo-btn {
+  padding: 6px 12px;
+  margin-right: 4px;
+  background-color: #646cff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.edit-todo-btn:hover:not(:disabled) {
+  background-color: #535bf2;
+}
+
+.edit-todo-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.delete-todo-btn {
+  padding: 6px 12px;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.delete-todo-btn:hover {
+  background-color: #dc2626;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -92,5 +211,137 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+
+  #todo-input {
+    border-color: #ddd;
+    background-color: white;
+  }
+
+  #todo-table thead tr {
+    border-bottom-color: #ddd;
+  }
+
+  #todo-table tbody tr {
+    border-bottom-color: #eee;
+  }
+
+  #todo-table tbody tr:hover {
+    background-color: rgba(100, 108, 255, 0.05);
+  }
+}
+
+/* Channel List Styles */
+.channel-list-section {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+#channel-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+  font-family: inherit;
+  background-color: transparent;
+  color: inherit;
+}
+
+#channel-input:focus {
+  outline: 2px solid #646cff;
+  border-color: transparent;
+}
+
+#add-channel-btn {
+  padding: 8px 20px;
+  background-color: #646cff;
+  color: white;
+  border: none;
+  white-space: nowrap;
+}
+
+#add-channel-btn:hover {
+  background-color: #535bf2;
+}
+
+#channel-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+#channel-table thead tr {
+  border-bottom: 2px solid #444;
+}
+
+#channel-table th {
+  padding: 12px 10px;
+  font-weight: 600;
+}
+
+#channel-table tbody tr {
+  border-bottom: 1px solid #333;
+  transition: background-color 0.2s;
+}
+
+#channel-table tbody tr:hover {
+  background-color: rgba(100, 108, 255, 0.1);
+}
+
+#channel-table td {
+  padding: 12px 10px;
+}
+
+.edit-channel-btn {
+  padding: 6px 12px;
+  margin-right: 4px;
+  background-color: #646cff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.edit-channel-btn:hover:not(:disabled) {
+  background-color: #535bf2;
+}
+
+.edit-channel-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.delete-channel-btn {
+  padding: 6px 12px;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.delete-channel-btn:hover {
+  background-color: #dc2626;
+}
+
+@media (prefers-color-scheme: light) {
+  #channel-input {
+    border-color: #ddd;
+    background-color: white;
+  }
+
+  #channel-table thead tr {
+    border-bottom-color: #ddd;
+  }
+
+  #channel-table tbody tr {
+    border-bottom-color: #eee;
+  }
+
+  #channel-table tbody tr:hover {
+    background-color: rgba(100, 108, 255, 0.05);
   }
 }
