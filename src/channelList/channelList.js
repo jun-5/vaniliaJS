@@ -34,7 +34,11 @@ const renderChannels = (keyword = "") => {
         // 검색 키워드 하이라이트
         const highlightedText = keyword.trim()
           ? channel.text.replace(
+              // g (global): 전역 검색 - 첫 번째 매칭만이 아니라 모든 매칭을 찾아서 바꿉니다
+              // i (case-insensitive): 대소문자 구분 안 함 - 대소문자 관계없이 검색합니다
               new RegExp(`(${keyword})`, "gi"),
+              // 정규식 (${keyword}): 괄호 ()로 감싸진 부분이 첫 번째 캡처 그룹이 됩니다
+              // $1: 그 캡처된 텍스트(즉, 검색 키워드와 매칭된 실제 텍스트)를 참조합니다
               '<span style="background-color: #ffd700; font-weight: bold;">$1</span>'
             )
           : channel.text;
