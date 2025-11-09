@@ -9,11 +9,23 @@ console.log(channelListContainer);
 if (channelListContainer) {
   channelListContainer.innerHTML = `
     <div>
-      <h3>Channel List</h3>
+      <h3>Channel List 
+        <span style="font-size: 14px; color: #999; font-weight: normal;">
+          (Debounce & Throttle 적용 예제)
+        </span>
+      </h3>
       <div class="card">
         <div class="channel-list-section">
           <input type="text" id="channel-input" placeholder="채널 이름을 입력하세요...">
           <button id="add-channel-btn">추가</button>
+        </div>
+        <div class="channel-list-section" style="margin-top: 10px;">
+          <input 
+            type="text" 
+            id="channel-search-input" 
+            placeholder="🔍 실시간 검색 (debounce 300ms)..."
+            style="width: 100%;"
+          >
         </div>
         <table id="channel-table">
         <colgroup>
