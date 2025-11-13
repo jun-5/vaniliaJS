@@ -1,10 +1,74 @@
 import "../style.css";
 import { debounce, throttle } from "../utils/helpers.js";
 
+// 상수 정의
+const BUTTON_CLICK_LIMIT_MS = 1000; // Throttle: 버튼 중복 클릭 방지 시간
+const SEARCH_DEBOUNCE_DELAY_MS = 300; // Debounce: 검색 입력 대기 시간
+
+// 상태 관리
 let Channels = [];
 let nextId = 1;
 let currentSearchKeyword = "";
+let previousRenderedIds = new Set(); // Diff 알고리즘을 위한 이전 렌더링 ID 추적
 
+/**
+ * 검색 키워드로 텍스트 하이라이트 처리
+ * @param {string} text - 원본 텍스트
+ * @param {string} keyword - 검색 키워드
+ * @returns {string} 하이라이트가 적용된 HTML 문자열
+ */
+const highlightKeyword = (text, keyword) => {
+  if (!keyword.trim()) return text;
+
+  return text.replace(
+    new RegExp(`(${keyword})`, "gi"),
+    '<span style="background-color: #ffd700; font-weight: bold;">$1</span>'
+  );
+};
+
+/**
+ * 단일 채널 행 생성
+ * @param {Object} channel - 채널 객체
+ * @param {string} keyword - 검색 키워드
+ * @returns {HTMLTableRowElement} 생성된 행 엘리먼트
+ */
+const createChannelRow = (channel, keyword = "") => {
+  const row = document.createElement("tr");
+  row.setAttribute("data-channel-id", channel.id);
+
+  const highlightedText = highlightKeyword(channel.text, keyword);
+
+  row.innerHTML = `
+    <td>${highlightedText}</td>
+    <td>
+      <button class="edit-channel-btn">수정</button>
+      <button class="delete-channel-btn">삭제</button>
+    </td>
+  `;
+
+  return row;
+};
+
+/**
+ * 빈 메시지 행 생성
+ * @param {string} message - 표시할 메시지
+ * @returns {HTMLTableRowElement} 생성된 메시지 행
+ */
+const createEmptyMessageRow = (message) => {
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td colspan="3" style="padding: 20px; text-align: center; color: #999;">
+      ${message}
+    </td>
+  `;
+  return row;
+};
+
+/**
+ * Diff Algorithm을 사용한 채널 리스트 렌더링
+ * - 변경된 항목만 업데이트하여 성능 최적화
+ * - DOM 조작 최소화로 불필요한 리플로우/리페인트 방지
+ */
 const renderChannels = (keyword = "") => {
   const channelListElement = document.querySelector("#channel-list");
 
@@ -15,46 +79,82 @@ const renderChannels = (keyword = "") => {
       )
     : Channels;
 
+  // 빈 상태 처리
   if (filteredChannels.length === 0) {
     const emptyMessage = keyword.trim()
       ? `'${keyword}' 검색 결과가 없습니다.`
       : "채널이 없습니다. 위에서 추가해보세요!";
 
-    channelListElement.innerHTML = `
-      <tr>
-        <td colspan="3" style="padding: 20px; text-align: center; color: #999;">
-          ${emptyMessage}
-        </td>
-      </tr>
-    `;
+    channelListElement.innerHTML = "";
+    channelListElement.appendChild(createEmptyMessageRow(emptyMessage));
+    previousRenderedIds.clear();
     return;
-  } else {
-    channelListElement.innerHTML = filteredChannels
-      .map((channel) => {
-        // 검색 키워드 하이라이트
-        const highlightedText = keyword.trim()
-          ? channel.text.replace(
-              // g (global): 전역 검색 - 첫 번째 매칭만이 아니라 모든 매칭을 찾아서 바꿉니다
-              // i (case-insensitive): 대소문자 구분 안 함 - 대소문자 관계없이 검색합니다
-              new RegExp(`(${keyword})`, "gi"),
-              // 정규식 (${keyword}): 괄호 ()로 감싸진 부분이 첫 번째 캡처 그룹이 됩니다
-              // $1: 그 캡처된 텍스트(즉, 검색 키워드와 매칭된 실제 텍스트)를 참조합니다
-              '<span style="background-color: #ffd700; font-weight: bold;">$1</span>'
-            )
-          : channel.text;
-
-        return `
-        <tr data-channel-id="${channel.id}">
-          <td>${highlightedText}</td>
-          <td>
-            <button class="edit-channel-btn">수정</button>
-            <button class="delete-channel-btn">삭제</button>
-          </td>
-        </tr>
-      `;
-      })
-      .join("");
   }
+
+  // Diff Algorithm 적용
+  const currentIds = new Set(filteredChannels.map((ch) => ch.id));
+  const existingRows = channelListElement.querySelectorAll(
+    "tr[data-channel-id]"
+  );
+
+  console.log(existingRows, "얍");
+
+  // 1. 삭제: 현재 필터링 결과에 없는 행 제거
+  existingRows.forEach((row) => {
+    const id = parseInt(row.dataset.channelId);
+    if (!currentIds.has(id)) {
+      row.remove();
+    }
+  });
+
+  // 2. 추가 및 업데이트
+  filteredChannels.forEach((channel, index) => {
+    const existingRow = channelListElement.querySelector(
+      `tr[data-channel-id="${channel.id}"]`
+    );
+
+    if (existingRow) {
+      // 기존 행이 있는 경우: 내용이 변경되었는지 확인 후 업데이트
+      const originalChannel = Channels.find((ch) => ch.id === channel.id);
+      const currentText =
+        existingRow.querySelector("td:first-child").textContent;
+      const newHighlightedText = highlightKeyword(channel.text, keyword);
+
+      // 텍스트 또는 하이라이트가 변경된 경우에만 업데이트
+      if (currentText !== channel.text || keyword.trim()) {
+        existingRow.querySelector("td:first-child").innerHTML =
+          newHighlightedText;
+      }
+
+      // 위치가 변경된 경우 재정렬
+      const currentPosition = Array.from(channelListElement.children).indexOf(
+        existingRow
+      );
+      if (currentPosition !== index) {
+        if (index === 0) {
+          channelListElement.prepend(existingRow);
+        } else {
+          const referenceNode = channelListElement.children[index];
+          channelListElement.insertBefore(existingRow, referenceNode);
+        }
+      }
+    } else {
+      // 새로운 행 추가
+      const newRow = createChannelRow(channel, keyword);
+
+      if (index === 0) {
+        channelListElement.prepend(newRow);
+      } else if (index >= channelListElement.children.length) {
+        channelListElement.appendChild(newRow);
+      } else {
+        const referenceNode = channelListElement.children[index];
+        channelListElement.insertBefore(newRow, referenceNode);
+      }
+    }
+  });
+
+  // 이전 렌더링 ID 업데이트
+  previousRenderedIds = currentIds;
 };
 
 const addChannel = (text) => {
@@ -90,8 +190,7 @@ export const setupChannelListHandlers = (element) => {
   const searchInput = element.querySelector("#channel-search-input");
   const channelList = element.querySelector("#channel-list");
 
-  // Throttle을 사용한 버튼 중복 클릭 방지 (1초에 최대 1번만)
-  const BUTTON_CLICK_LIMIT_MS = 1000;
+  // Throttle을 사용한 버튼 중복 클릭 방지
   const throttledAddChannel = throttle((value) => {
     addChannel(value);
     input.value = "";
@@ -112,8 +211,7 @@ export const setupChannelListHandlers = (element) => {
     });
   }
 
-  // Debounce를 사용한 실시간 검색 (300ms 후 검색 실행)
-  const SEARCH_DEBOUNCE_DELAY_MS = 300;
+  // Debounce를 사용한 실시간 검색
   if (searchInput) {
     const debouncedSearch = debounce((keyword) => {
       currentSearchKeyword = keyword;
@@ -132,7 +230,6 @@ export const setupChannelListHandlers = (element) => {
     // 한 곳에서 모든 클릭 이벤트를 관리할 수 있음
 
     // Throttle을 사용한 수정/삭제 버튼 중복 클릭 방지
-    const BUTTON_CLICK_LIMIT_MS = 1000;
     const throttledEditChannel = throttle((channelId) => {
       const newText = window.prompt(
         "채널 이름을 수정하세요:",

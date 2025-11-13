@@ -345,3 +345,519 @@ button:focus-visible {
     background-color: rgba(100, 108, 255, 0.05);
   }
 }
+
+#practice {
+  width: 100%;
+  max-width: 1280px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  gap: 20px;
+}
+
+.practice-table {
+  width: 600px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.practice-table thead tr {
+  border-bottom: 2px solid #444;
+}
+
+.practice-table th {
+  padding: 12px 10px;
+  font-weight: 600;
+}
+
+.practice-table tbody tr {
+  border-bottom: 1px solid #333;
+  transition: background-color 0.2s;
+}
+
+.practice-table tbody tr:hover {
+  background-color: rgba(100, 108, 255, 0.1);
+}
+
+.practice-table td {
+  padding: 12px 10px;
+}
+
+.practice-table .button-group {
+  display: flex;
+}
+
+/* ============================================
+   Modal/Dialog Styles
+   ============================================ */
+
+/* Backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  padding: 20px;
+}
+
+.modal-backdrop.modal-active {
+  opacity: 1;
+}
+
+.modal-backdrop.modal-closing {
+  opacity: 0;
+}
+
+/* Dialog */
+.modal-dialog {
+  background: #1a1a1a;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: auto;
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-backdrop.modal-active .modal-dialog {
+  transform: scale(1) translateY(0);
+}
+
+.modal-backdrop.modal-closing .modal-dialog {
+  transform: scale(0.9) translateY(20px);
+}
+
+/* Header */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+  line-height: 1;
+}
+
+.modal-close-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.87);
+}
+
+/* Body */
+.modal-body {
+  padding: 24px;
+}
+
+.modal-message {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Footer */
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.87);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.modal-btn-primary {
+  background-color: #646cff;
+  color: white;
+  border-color: #646cff;
+}
+
+.modal-btn-primary:hover {
+  background-color: #535bf2;
+  border-color: #535bf2;
+}
+
+/* ============================================
+   Modal Demo Page Styles
+   ============================================ */
+
+.modal-demo-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.modal-demo-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+  text-align: center;
+  background: linear-gradient(135deg, #646cff 0%, #747bff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 40px;
+  font-size: 1.1rem;
+}
+
+.demo-section {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.demo-section h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.description {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.95rem;
+}
+
+.demo-btn {
+  margin-right: 12px;
+  margin-bottom: 12px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid #646cff;
+  background-color: #646cff;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.demo-btn:hover {
+  background-color: #535bf2;
+  border-color: #535bf2;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.3);
+}
+
+.demo-btn-success {
+  background-color: #10b981;
+  border-color: #10b981;
+}
+
+.demo-btn-success:hover {
+  background-color: #059669;
+  border-color: #059669;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.demo-btn-error {
+  background-color: #ef4444;
+  border-color: #ef4444;
+}
+
+.demo-btn-error:hover {
+  background-color: #dc2626;
+  border-color: #dc2626;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.result-box {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  min-height: 20px;
+  transition: all 0.3s;
+}
+
+.result-success {
+  background-color: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #10b981;
+}
+
+.result-cancel {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+.features {
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.1) 0%, rgba(116, 123, 255, 0.1) 100%);
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 32px;
+  border: 1px solid rgba(100, 108, 255, 0.2);
+}
+
+.features h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.features li {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+}
+
+/* Custom Form in Modal */
+.custom-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.87);
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #646cff;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Custom Select List */
+.custom-select-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.select-option {
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.select-option:hover {
+  background-color: rgba(100, 108, 255, 0.1);
+  border-color: #646cff;
+  transform: translateX(4px);
+}
+
+.select-option strong {
+  display: block;
+  margin-bottom: 4px;
+  color: rgba(255, 255, 255, 0.87);
+  font-size: 1rem;
+}
+
+.select-option p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+/* Complex Content */
+.complex-content {
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+}
+
+/* Light Mode Adjustments */
+@media (prefers-color-scheme: light) {
+  .modal-dialog {
+    background: white;
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .modal-header,
+  .modal-footer {
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .modal-title {
+    color: #213547;
+  }
+
+  .modal-close-btn {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .modal-close-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.87);
+  }
+
+  .modal-message {
+    color: #213547;
+  }
+
+  .modal-btn {
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #213547;
+  }
+
+  .modal-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.3);
+  }
+
+  .demo-section {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .demo-section h3 {
+    color: #213547;
+  }
+
+  .description {
+    color: #666;
+  }
+
+  .subtitle {
+    color: #666;
+  }
+
+  .features {
+    background: linear-gradient(135deg, rgba(100, 108, 255, 0.05) 0%, rgba(116, 123, 255, 0.05) 100%);
+    border-color: rgba(100, 108, 255, 0.2);
+  }
+
+  .features h3 {
+    color: #213547;
+  }
+
+  .features li {
+    color: #213547;
+  }
+
+  .form-group label {
+    color: #213547;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    border-color: rgba(0, 0, 0, 0.2);
+    background-color: white;
+    color: #213547;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    background-color: white;
+  }
+
+  .select-option {
+    border-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.01);
+  }
+
+  .select-option:hover {
+    background-color: rgba(100, 108, 255, 0.05);
+  }
+
+  .select-option strong {
+    color: #213547;
+  }
+
+  .select-option p {
+    color: #666;
+  }
+
+  .complex-content {
+    color: #213547;
+  }
+}

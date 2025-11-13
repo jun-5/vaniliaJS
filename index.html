@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg" href="/vite.svg" />
@@ -15,8 +15,46 @@
     <div id="divider"></div>
     <script type="module" src="/src/table/index.js"></script> -->
 
-    <div id="channelList" class="container"></div>
+    <!-- <div id="channelList" class="container"></div> -->
     <!-- <div id="divider"></div> -->
-    <script type="module" src="/src/channelList/index.js"></script>
+    <!-- <script type="module" src="/src/channelList/index.js"></script> -->
+    <!-- <script type="module" src="/src/main.js"></script> -->
+
+    <h4>JunoHTML</h4>
+    <div>
+    <span>
+      <input id="add-input" />
+      <button id="add-button">add</button>
+    </span>
+    <div>
+      <label>Search: </label>
+      <input id="search-input" />
+      <!-- <button id="search-button">search</button> -->
+    </span>
+    </div>
+
+    <div style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd;">
+      <table style="width: 100%;">
+        <colgroup>
+          <col width="20%"/>
+          <col width="60%"/>
+          <col width="10%"/>
+          <col width="10%"/>
+        </colgroup>
+        <thead>
+          <tr>
+            <th>TH1</th>
+            <th>TH2</th>
+          </tr>
+        </thead>
+        <tbody id="channel-list"></tbody>
+      </table>
+      <div id="sentinel" style="padding: 10px; text-align: center; color: #999;">
+        sentinel
+      </div>
+    </div>
+    <script type="module" src="/src/practice2/index.js"></script>
+    <!--type=module은 자동으로 defer로 동작함 -->
+    <!-- header에 defer랑 같은효과! -->
   </body>
 </html>
